@@ -8,22 +8,24 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-4">
-                <table>
+                <table class="w-full text-center">
                     <thead>
                     <tr>
                         <th>ID</th>
                         <th>Enlace</th>
+                        <th>&nbsp;</th>
                     </tr>
                     </thead>
                     <tbody>
                     @forelse($repositories as $repository)
                         <tr>
                             <td>{{ $repository->id }}</td>
-                            <td>{{ $repository->url }}</td><td></td>
+                            <td>{{ $repository->url }}</td>
+                            <td><a href="{{ route('repositories.show',compact('repository')) }}"> Ver</a></td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="2">No hay repositorios Creados</td>
+                            <td colspan="3">No hay repositorios Creados</td>
                         </tr>
                     @endforelse
                     </tbody>

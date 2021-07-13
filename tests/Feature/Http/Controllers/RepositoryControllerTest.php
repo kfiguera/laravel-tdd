@@ -50,6 +50,16 @@ class RepositoryControllerTest extends TestCase
 
     }
 
+    public function test_show()
+    {
+        $user = User::factory()->create();
+        $repository = Repository::factory()->create(['user_id' => $user->id]);
+
+        $this->actingAs($user)
+            ->get("repositories/{$repository->id}")
+            ->assertStatus(200);
+    }
+
     public function test_store()
     {
         $data = [
@@ -125,6 +135,17 @@ class RepositoryControllerTest extends TestCase
     }
 
     //Policies
+
+    public function test_policy_show()
+    {
+
+        $user = User::factory()->create();
+        $repository = Repository::factory()->create();
+
+        $this->actingAs($user)
+            ->get("repositories/{$repository->id}")
+            ->assertStatus(403);
+    }
 
     public function test_policy_update()
     {
