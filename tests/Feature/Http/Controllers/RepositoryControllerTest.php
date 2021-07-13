@@ -58,9 +58,10 @@ class RepositoryControllerTest extends TestCase
 
     public function test_destroy()
     {
-        $repository = Repository::factory()->create();
-
         $user = User::factory()->create();
+        $repository = Repository::factory()->create([
+            'user_id' => $user->id
+        ]);
 
         $this->actingAs($user)
             ->delete("repositories/{$repository->id}")
@@ -96,6 +97,7 @@ class RepositoryControllerTest extends TestCase
             ->assertSessionHasErrors(['url', 'description']);
     }
 
+    //Policies
 
     public function test_policy_update()
     {
@@ -109,6 +111,16 @@ class RepositoryControllerTest extends TestCase
 
         $this->actingAs($user)
             ->put("repositories/{$repository->id}", $data)
+            ->assertStatus(403);
+    }
+
+    public function test_policy_destroy()
+    {
+        $user = User::factory()->create();
+        $repository = Repository::factory()->create();
+
+        $this->actingAs($user)
+            ->delete("repositories/{$repository->id}")
             ->assertStatus(403);
     }
 }
