@@ -14,6 +14,7 @@
                         <th>ID</th>
                         <th>Enlace</th>
                         <th>&nbsp;</th>
+                        <th>&nbsp;</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -22,6 +23,7 @@
                             <td>{{ $repository->id }}</td>
                             <td>{{ $repository->url }}</td>
                             <td><a href="{{ route('repositories.show',compact('repository')) }}"> Ver</a></td>
+                            <td><a href="{{ route('repositories.edit',compact('repository')) }}"> Editar</a></td>
                         </tr>
                     @empty
                         <tr>

@@ -76,6 +76,18 @@ class RepositoryControllerTest extends TestCase
         $this->assertDatabaseHas('repositories', $data);
     }
 
+    public function test_edit()
+    {
+        $user = User::factory()->create();
+        $repository = Repository::factory()->create(['user_id' => $user->id]);
+
+        $this->actingAs($user)
+            ->get("repositories/{$repository->id}/edit")
+            ->assertStatus(200)
+            ->assertSee($repository->url)
+            ->assertSee($repository->description);
+    }
+
     public function test_update()
     {
         $user = User::factory()->create();
@@ -123,6 +135,7 @@ class RepositoryControllerTest extends TestCase
             ->assertSessionHasErrors(['url', 'description']);
     }
 
+
     public function test_validate_update()
     {
         $repository = Repository::factory()->create();
@@ -144,6 +157,17 @@ class RepositoryControllerTest extends TestCase
 
         $this->actingAs($user)
             ->get("repositories/{$repository->id}")
+            ->assertStatus(403);
+    }
+
+    public function test_policy_edit()
+    {
+
+        $user = User::factory()->create();
+        $repository = Repository::factory()->create();
+
+        $this->actingAs($user)
+            ->get("repositories/{$repository->id}/edit")
             ->assertStatus(403);
     }
 
