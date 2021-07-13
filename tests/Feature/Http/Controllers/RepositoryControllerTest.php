@@ -23,6 +23,33 @@ class RepositoryControllerTest extends TestCase
         $this->delete('repositories/1')->assertRedirect('login');       //destroy
     }
 
+    public function test_index_empty()
+    {
+        Repository::factory()->create();
+        $user = User::factory()->create();
+
+        $this->actingAs($user)
+            ->get('repositories')
+            ->assertStatus(200)
+            ->assertSee('No hay repositorios Creados');
+
+
+    }
+
+    public function test_index_with_data()
+    {
+
+        $user = User::factory()->create();
+        $repository = Repository::factory()->create(['user_id' => $user->id]);
+        $this->actingAs($user)
+            ->get('repositories')
+            ->assertStatus(200)
+            ->assertSee($repository->id)
+            ->assertSee($repository->url);
+
+
+    }
+
     public function test_store()
     {
         $data = [
@@ -123,4 +150,5 @@ class RepositoryControllerTest extends TestCase
             ->delete("repositories/{$repository->id}")
             ->assertStatus(403);
     }
+
 }
