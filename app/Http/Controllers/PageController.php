@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class PageController extends Controller
 {
     public function home(){
-         $repositories = Repository::latest()->get();
+         $repositories = Repository::latest()->paginate(5);
          return view('welcome',compact('repositories'));
     }
 }
